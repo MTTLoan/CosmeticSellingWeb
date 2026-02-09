@@ -57,7 +57,7 @@ class SalePageController extends Controller
         return view('TimKiemSP', compact('titles', 'query', 'sort_by'));
     }
 
-    public function showBookDetails($product_title_id)
+    public function showProductDetails($product_title_id)
     {
         $producttitle = DB::table('producttitles')->where('id', $product_title_id)->first();
 
@@ -102,7 +102,7 @@ class SalePageController extends Controller
         return view('ChiTietSanPham', compact('producttitle', 'products', 'images', 'review_score', 'customer_reviews'));
     }
 
-    public function showBookByType($producttype_id)
+    public function showProductByType($producttype_id)
     {
         // Lấy tên thể loại sách
         $producttypeName = DB::table('producttypes')

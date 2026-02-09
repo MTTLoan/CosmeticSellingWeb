@@ -15,22 +15,22 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="#VanHoc" class="d-block p-1">VĂN HỌC</a>
+                    <a href="#ChamSocDaMat" class="d-block p-1">CHĂM SÓC DA MẶT</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#SachThieuNhi" class="d-block p-1">SÁCH THIẾU NHI</a>
+                    <a href="#TrangDiem" class="d-block p-1">TRANG ĐIỂM</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#PhatTrienBanThan" class="d-block p-1">PHÁT TRIỂN BẢN THÂN</a>
+                    <a href="#ChamSocCoThe" class="d-block p-1">CHĂM SÓC CƠ THỂ</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#SachGiaoDuc" class="d-block p-1">SÁCH GIÁO DỤC</a>
+                    <a href="#ChamSocToc" class="d-block p-1">CHĂM SÓC TÓC</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#KinhDoanh" class="d-block p-1">KINH DOANH</a>
+                    <a href="#NuocHoa" class="d-block p-1">NƯỚC HOA</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#NgoaiNgu" class="d-block p-1">NGOẠI NGỮ</a>
+                    <a href="#DungCuLamDep" class="d-block p-1">DỤNG CỤ LÀM ĐẸP</a>
                 </li>
             </ul>
         </aside>
@@ -60,9 +60,9 @@
                     </div>
                     <!-- Column 2, Row 1 (Book 1) -->
                     <div class="col-lg-3 book-cell ps-0">
-                        <img src="{{ asset('uploads/banner/Banner1.jpg') }}" alt="Book 1"
+                        <img src="{{ asset('uploads/banner/Banner1.jpg') }}" alt="Product 1"
                             class="img-fluid img-responsive rounded pb-3">
-                        <img src="{{ asset('uploads/banner/Banner2.jpg') }}" alt="Book 2"
+                        <img src="{{ asset('uploads/banner/Banner2.jpg') }}" alt="Product 2"
                             class="img-fluid img-responsive rounded ">
                     </div>
                 </div>
@@ -70,9 +70,9 @@
         </div>
     </div>
 
-    <!-- Loop through each book category and display books -->
+    <!-- Loop through each product category and display products -->
     @foreach ($productTitles as $category => $titles)
-    <div class="category-section" id="{{ $category }}">
+    <div class="category-section" id="{{ str_replace(' ', '', $category) }}">
         <h4 class="card-group-title">
             <span class="card-group-title-main">{{ mb_strtoupper($category, 'UTF-8')  }}</span>
             <a href="#" class="card-group-link">Xem thêm ></a>
@@ -83,15 +83,15 @@
             @foreach ($titles as $title)
             <div class="col">
                 <div class="product p-20 mb-20 rounded w-auto bg-white" data-product-id="{{ $title->id }}">
-                    <a href="{{ route('sale.showBookDetails', ['product_title_id' => $title->id]) }}"
+                    <a href="{{ route('sale.showProductDetails', ['product_title_id' => $title->id]) }}"
                         style="text-decoration: none; color: inherit;">
                         <div class="image_container d-flex align-items-center justify-content-center">
-                            <img src="{{ asset($title->image_url) }}" alt="product" class="img-fluid img_book" />
+                            <img src="{{ asset($title->image_url) }}" alt="product" class="img-fluid img_product" />
                         </div>
                     </a>
                     <h5 class="fw-bold my-2" id="price">{{ number_format($title->unit_price, 0, ',', '.') }} đ</h5>
                     <p class="mb-2" id="title">{{ $title->name }}</p>
-                    <div class="d-flex  p-0 justify-content-between align-content-center">
+                    <div class="d-flex p-0 justify-content-between align-content-center">
                         <span id="sales">Đã bán {{ $title->sold_quantity }}</span>
                     </div>
                 </div>

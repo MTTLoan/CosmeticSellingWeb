@@ -15,7 +15,7 @@
         @foreach ($titles as $title)
         <div class="col">
             <div class="product p-20 mb-20 rounded w-auto bg-white" data-product-id="{{ $title->id }}">
-                <a href="{{ route('sale.showBookDetails', ['product_title_id' => $title->id]) }}"
+                <a href="{{ route('sale.showProductDetails', ['product_title_id' => $title->id]) }}"
                     style="text-decoration: none; color: inherit;">
                     <div class="image_container d-flex align-items-center justify-content-center">
                         <img src="{{ asset($title->image_url) }}" alt="product" class="img-fluid img_book" />

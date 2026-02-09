@@ -39,7 +39,7 @@
                     </div>
                     <div class="">
                         <p>&nbsp;</p>
-                        <p>Tác giả: {{ $producttitle->author }}</p>
+                        <p>Thương hiệu: {{ $producttitle->author }}</p>
                         <p>Dung tích: {{ $products->first()->capacity ?? 'N/A' }}</p>
                         <p>Mô tả: {{ $producttitle->description }}</p>
                     </div>
@@ -54,7 +54,7 @@
                     @foreach ($products as $product)
                     <button class="btn btn-outline-primary version-btn" data-product-id="{{ $product->id }}"
                         data-price="{{ $product->unit_price }}" data-capacity="{{ $product->capacity }}">
-                        {{ $product->publishing_year }} - {{ $product->color }}
+                        {{ $product->color }}
                     </button>
                     @endforeach
                 </div>
@@ -83,7 +83,7 @@
                 <div id="descriptionContent" class="d-flex flex-column gap-35">
                     <p class="fs-5 fw-bold my-4">Thông tin sản phẩm</p>
                     <p>
-                        Tác giả: {{ $producttitle->author }}<br />
+                        Thương hiệu: {{ $producttitle->author }}<br />
                         Dung tích: {{ $products->first()->capacity ?? 'N/A' }}<br /><br />
                         {{ $producttitle->description }}
                     </p>

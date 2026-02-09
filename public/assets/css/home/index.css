@@ -40,8 +40,6 @@ body {
 }
 
 .button-section {
-    /* justify-content: start;
-    flex-wrap: wrap; */
     margin-top: 0;
     border-radius: 10px;
     background-color: #ffffff;
@@ -64,23 +62,17 @@ body {
     font-size: 2rem;
     font-weight: bold;
     display: flex;
-    /* Use flexbox for layout */
     align-items: end;
-    /* Vertically center the items */
     justify-content: space-between;
-    /* Space out the title and the link */
     width: 100%;
-    /* Ensure the title takes the full width */
     margin-bottom: 1rem;
-    /* Spacing between title and description */
     margin-top: 2rem;
 }
 
 /* Title text */
 .card-group-title-main {
-    font-size: 1.5 rem;
+    font-size: 1.5rem; /* Sửa space typo từ 1.5 rem -> 1.5rem */
     color: #333;
-    /* Title color */
 }
 
 /* Link style for 'Xem thêm' */
@@ -88,13 +80,11 @@ body {
 .card-group-link-blog {
     font-size: 0.9rem;
     color: #c53327;
-    /* Color for the link */
     text-decoration: none;
 }
 
 .card-group-link:hover {
     text-decoration: underline;
-    /* Underline on hover */
 }
 
 /* Card Group */
@@ -144,8 +134,11 @@ body {
     font-size: 14px !important;
 }
 
-.card_group .image_container, .img_book {
+.card_group .image_container,
+.img_product {
+    /* Sửa từ .img_book sang .img_product để match Blade */
     height: 198px !important;
+    object-fit: contain; /* Thêm để image scale đúng, không crop */
 }
 
 .card_group #sales {
@@ -154,15 +147,15 @@ body {
 
 .card_group #title {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Hiển thị tối đa 2 hàng */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis; /* Hiển thị "..." khi bị cắt */
-    white-space: normal; /* Cho phép xuống hàng */
+    text-overflow: ellipsis;
+    white-space: normal;
     height: 3em;
     line-height: 1.5em;
+    font-size: 14px; /* Thêm để text nhỏ hơn, tránh overflow */
 }
-
 
 @media (max-width: 992px) {
     .container-fluid-product {
@@ -176,7 +169,7 @@ body {
         align-items: flex-start;
     }
 
-    .card-group-link-1,
+    .card-group-link,
     .card-group-link-blog {
         margin-top: 0.5rem;
     }
@@ -190,10 +183,16 @@ body {
     .mb-20 {
         margin-bottom: 10px;
     }
+    .card_group .image_container,
+    .img_product {
+        /* Giảm height trên mobile */
+        height: 150px !important;
+    }
 }
 
 @media (max-width: 992px) {
     .book-cell {
+        /* Có thể sửa class thành .product-cell nếu muốn nhất quán */
         display: none;
     }
 }

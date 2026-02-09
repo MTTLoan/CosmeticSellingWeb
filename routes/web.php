@@ -15,10 +15,10 @@ use App\Http\Middleware\RedirectIfNotAuthenticated;
 use App\Http\Middleware\RedirectIfNotEmployee;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/product-by-category/product-details/{product_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
-Route::get('/product-by-category/{category}', [SalePageController::class, 'showBookByCategory'])->name('sale.showBookByCategory');
-Route::get('/product-by-type/{producttype_id}', [SalePageController::class, 'showBookByType'])->name('sale.showBookByType');
-Route::get('/product-details/{product_title_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
+Route::get('/product-by-category/product-details/{product_id}', [SalePageController::class, 'showProductDetails'])->name('sale.showProductDetails');
+Route::get('/product-by-category/{category}', [SalePageController::class, 'showProductByCategory'])->name('sale.showProductByCategory');
+Route::get('/product-by-type/{producttype_id}', [SalePageController::class, 'showProductByType'])->name('sale.showProductByType');
+Route::get('/product-details/{product_title_id}', [SalePageController::class, 'showProductDetails'])->name('sale.showProductDetails');
 Route::get('/discounts', [DiscountController::class, 'listDiscounts'])->name('discounts.list');
 Route::get('/search', [SalePageController::class, 'search'])->name('search');
 
