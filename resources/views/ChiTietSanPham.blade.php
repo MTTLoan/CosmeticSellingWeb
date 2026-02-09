@@ -24,7 +24,7 @@
 
         <!-- Thông tin sản phẩm -->
         <div class="col-md-7 info_product px-md-2 px-4 pb-4">
-            <h2 class="fw-bold fs-2 mb-4" id="title">{{ $booktitle->name }}</h2>
+            <h2 class="fw-bold fs-2 mb-4" id="title">{{ $producttitle->name }}</h2>
             <div class="description_main_product p-0">
                 <div class="gap-5">
                     <div class="">
@@ -39,22 +39,22 @@
                     </div>
                     <div class="">
                         <p>&nbsp;</p>
-                        <p>Tác giả: {{ $booktitle->author }}</p>
-                        <p>Số trang: {{ $books->first()->page_number ?? 'N/A' }}</p>
-                        <p>Mô tả: {{ $booktitle->description }}</p>
+                        <p>Tác giả: {{ $producttitle->author }}</p>
+                        <p>Dung tích: {{ $products->first()->capacity ?? 'N/A' }}</p>
+                        <p>Mô tả: {{ $producttitle->description }}</p>
                     </div>
                 </div>
                 <hr />
                 <h1 class="fw-bold text-danger" id="priceDisplay">
-                    {{ number_format($books->first()->unit_price ?? 0, 0, '', '.') }} đ
+                    {{ number_format($products->first()->unit_price ?? 0, 0, '', '.') }} đ
                 </h1>
                 <hr />
                 <h4>Chọn phiên bản:</h4>
                 <div class="d-flex gap-3 mb-4">
-                    @foreach ($books as $book)
-                    <button class="btn btn-outline-primary version-btn" data-book-id="{{ $book->id }}"
-                        data-price="{{ $book->unit_price }}" data-page-number="{{ $book->page_number }}">
-                        {{ $book->publishing_year }} - {{ $book->cover }}
+                    @foreach ($products as $product)
+                    <button class="btn btn-outline-primary version-btn" data-product-id="{{ $product->id }}"
+                        data-price="{{ $product->unit_price }}" data-capacity="{{ $product->capacity }}">
+                        {{ $product->publishing_year }} - {{ $product->color }}
                     </button>
                     @endforeach
                 </div>
@@ -83,9 +83,9 @@
                 <div id="descriptionContent" class="d-flex flex-column gap-35">
                     <p class="fs-5 fw-bold my-4">Thông tin sản phẩm</p>
                     <p>
-                        Tác giả: {{ $booktitle->author }}<br />
-                        Số trang: {{ $books->first()->page_number ?? 'N/A' }}<br /><br />
-                        {{ $booktitle->description }}
+                        Tác giả: {{ $producttitle->author }}<br />
+                        Dung tích: {{ $products->first()->capacity ?? 'N/A' }}<br /><br />
+                        {{ $producttitle->description }}
                     </p>
                     <p class="fs-5 fw-bold my-4">Hình ảnh sản phẩm</p>
                     @foreach ($images as $image)
@@ -125,7 +125,7 @@
 
 <form id="buyNowForm" action="{{ route('order.buyNow') }}" method="POST" style="display: none;">
     @csrf
-    <input type="hidden" name="book_id" id="buyNowBookId">
+    <input type="hidden" name="product_id" id="buyNowProductId">
     <input type="hidden" name="quantity" id="buyNowQuantity">
 </form>
 @endsection

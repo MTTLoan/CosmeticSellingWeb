@@ -71,7 +71,7 @@
     </div>
 
     <!-- Loop through each book category and display books -->
-    @foreach ($bookTitles as $category => $titles)
+    @foreach ($productTitles as $category => $titles)
     <div class="category-section" id="{{ $category }}">
         <h4 class="card-group-title">
             <span class="card-group-title-main">{{ mb_strtoupper($category, 'UTF-8')  }}</span>
@@ -82,8 +82,8 @@
         <div class="card_group row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
             @foreach ($titles as $title)
             <div class="col">
-                <div class="product p-20 mb-20 rounded w-auto bg-white" data-book-id="{{ $title->id }}">
-                    <a href="{{ route('sale.showBookDetails', ['book_tittle_id' => $title->id]) }}"
+                <div class="product p-20 mb-20 rounded w-auto bg-white" data-product-id="{{ $title->id }}">
+                    <a href="{{ route('sale.showBookDetails', ['product_title_id' => $title->id]) }}"
                         style="text-decoration: none; color: inherit;">
                         <div class="image_container d-flex align-items-center justify-content-center">
                             <img src="{{ asset($title->image_url) }}" alt="product" class="img-fluid img_book" />
@@ -117,7 +117,6 @@
 <link href="{{ asset('assets/css/home/index.css') }}" rel="stylesheet">
 @endpush
 
-@push('s
-cripts')
+@push('scripts')
 <script src="{{ asset('assets/js/home/index.js') }}"></script>
 @endpush

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Book;
+use App\Models\Product;
 use App\Models\GoodsReceipt;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('goods_receipt_details', function(Blueprint $table) {
             $table->id();
             $table->foreignIdFor(GoodsReceipt::class, 'goods_receipt_id')->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Book::class, 'book_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignIdFor(Product::class, 'product_id')->nullable()->constrained()->onDelete('set null');
             $table->integer('quantity');
             $table->integer('price');   
             $table->timestamps();
@@ -31,4 +31,3 @@ return new class extends Migration
         Schema::dropIfExists('goods_receipt_details');
     }
 };
-

@@ -5,24 +5,24 @@
 <div class="shipping_infor_container body-container">
     @if(session('success'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công',
-                text: `{{ session('success') }}`,
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: `{{ session('success') }}`,
         });
+    });
     </script>
     @endif
     @if(session('error'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi',
-                text: `{{ session('error') }}`,
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: `{{ session('error') }}`,
         });
+    });
     </script>
     @endif
     <form id="personal-info-form" class="form-container" action="{{ route('order.buyNowCreate') }}" method="POST">
@@ -99,7 +99,7 @@
                 <a type="button" class="btn btn-back" id="goToCart" href="{{ route('cart.index') }}">
                     <i class="bi bi-caret-left-fill"></i> Về giỏ hàng
                 </a>
-                <input type="hidden" name="book_id" value="{{ $book->id }}">
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="quantity" value="{{ $quantity }}">
                 <input type="hidden" name="discount_id" id="discount-id">
                 <input type="hidden" name="total_price" value="{{ $totalPrice }}">
@@ -121,10 +121,10 @@
         </div>
 
         <div class="cart-item">
-            <div class="cart-item-name">{{ $book->bookTitle->name }}</div>
+            <div class="cart-item-name">{{ $product->productTitle->name }}</div>
             <div class="cart-item-quantity">{{ $quantity }}</div>
             <div class="cart-item-price">
-                <span class="cart-item-total-price">{{ number_format($quantity * $book->unit_price) }} đ</span>
+                <span class="cart-item-total-price">{{ number_format($quantity * $product->unit_price) }} đ</span>
             </div>
         </div>
 
@@ -158,31 +158,31 @@
 @push('scripts')
 @if(session('success'))
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: `{{ session('success') }}`,
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: `{{ session('success') }}`,
     });
+});
 </script>
 @endif
 @if(session('error'))
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi',
-            text: `{{ session('error') }}`,
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: `{{ session('error') }}`,
     });
+});
 </script>
 @endif
 <script>
-    const customerProvince = "{{ $customer->province }}";
-    const customerDistrict = "{{ $customer->district }}";
-    const customerWard = "{{ $customer->ward }}";
-    const checkDiscountUrl = "{{ route('check.discount') }}";
+const customerProvince = "{{ $customer->province }}";
+const customerDistrict = "{{ $customer->district }}";
+const customerWard = "{{ $customer->ward }}";
+const checkDiscountUrl = "{{ route('check.discount') }}";
 </script>
 <script src="{{ asset('assets/js/MuaNgay.js') }}"></script>
 @endpush

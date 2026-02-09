@@ -13,16 +13,17 @@
             @foreach ($cartItems as $item)
             <div class="cart-item d-flex mt-3 align-items-center justify-content-between" id="item{{ $item->id }}">
                 <div class="d-flex justify-content-start" style="width: 60%;">
-                    @if($item->book->images->isNotEmpty())
-                    <img src="{{ $item->book->images->first()->url }}" alt="{{ $item->book->bookTitle->name }}"
+                    @if($item->product->images->isNotEmpty())
+                    <img src="{{ $item->product->images->first()->url }}" alt="{{ $item->product->productTitle->name }}"
                         class="cart-item-image">
                     @else
                     <img src="{{ asset('uploads/products/default.png') }}" alt="Default Image" class="cart-item-image">
                     @endif
                     <div>
-                        <div class="cart-item-name">{{ $item->book->bookTitle->name }}</div>
+                        <div class="cart-item-name">{{ $item->product->productTitle->name }}</div>
                         <!-- Loại bìa -->
-                        <div class="cart-item-ver">{{ $item->book->publishing_year }} - {{ $item->book->cover }}</div>
+                        <div class="cart-item-ver">{{ $item->product->publishing_year }} - {{ $item->product->color }}
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between" style="width: 40%;">
@@ -33,10 +34,10 @@
                         <button onclick="changeQuantity('increase', {{ $item->id }})">+</button>
                     </div>
                     <div class="cart-item-price d-flex flex-md-row flex-column">
-                        <span>{{ number_format($item->book->unit_price) }} đ</span>
+                        <span>{{ number_format($item->product->unit_price) }} đ</span>
                         <span class="cart-item-total-price ms-md-3" id="total-price{{ $item->id }}"
-                            data-unit-price="{{ $item->book->unit_price }}">
-                            {{ number_format($item->quantity * $item->book->unit_price) }} đ
+                            data-unit-price="{{ $item->product->unit_price }}">
+                            {{ number_format($item->quantity * $item->product->unit_price) }} đ
                         </span>
                     </div>
                     <span class="remove-item mx-md-3 mx-2" onclick="removeItem('{{ $item->id }}')">Xóa</span>

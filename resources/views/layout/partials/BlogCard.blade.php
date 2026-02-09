@@ -9,7 +9,7 @@
         <div class="card custom-card">
             <img src="{{ asset($product['image']) }}" class="card-img-top" alt="ảnh sản phẩm">
             <div class="card-body">
-                <h5 class="card-title">Review sách:</h5>
+                <h5 class="card-title">Review sản phẩm:</h5>
                 <p class="card-text">{{ $product['name'] }}</p>
             </div>
         </div>

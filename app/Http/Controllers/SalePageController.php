@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
-use App\Models\BookType;
+use App\Models\Product;
+use App\Models\ProductType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -19,24 +19,24 @@ class SalePageController extends Controller
         $sort_by = $request->input('sort_by', 'price_asc');
 
         // Tìm kiếm các tiêu đề sách dựa trên từ khóa
-        $titles = DB::table('booktitles')
-            ->join('books', 'booktitles.id', '=', 'books.book_title_id')
-            ->leftJoin('order_details', 'books.id', '=', 'order_details.book_id')
-            ->join('images', 'books.id', '=', 'images.book_id')
-            ->where('booktitles.name', 'LIKE', "%{$query}%")
+        $titles = DB::table('producttitles')
+            ->join('products', 'producttitles.id', '=', 'products.product_title_id')
+            ->leftJoin('order_details', 'products.id', '=', 'order_details.product_id')
+            ->join('images', 'products.id', '=', 'images.product_id')
+            ->where('producttitles.name', 'LIKE', "%{$query}%")
             ->select(
-                'booktitles.id',
-                'booktitles.name',
-                'booktitles.author',
-                DB::raw('MIN(books.unit_price) as unit_price'),
+                'producttitles.id',
+                'producttitles.name',
+                'producttitles.author',
+                DB::raw('MIN(products.unit_price) as unit_price'),
                 DB::raw('COALESCE(SUM(order_details.quantity), 0) as sold_quantity'),
                 DB::raw('MIN(images.url) as image_url')
             )
             ->groupBy(
-                'booktitles.id',
-                'booktitles.name',
-                'booktitles.author',
-                'booktitles.book_type_id'
+                'producttitles.id',
+                'producttitles.name',
+                'producttitles.author',
+                'producttitles.product_type_id'
             );
 
         // Áp dụng sắp xếp
@@ -57,30 +57,30 @@ class SalePageController extends Controller
         return view('TimKiemSP', compact('titles', 'query', 'sort_by'));
     }
 
-    public function showBookDetails($book_title_id)
+    public function showBookDetails($product_title_id)
     {
-        $booktitle = DB::table('booktitles')->where('id', $book_title_id)->first();
+        $producttitle = DB::table('producttitles')->where('id', $product_title_id)->first();
 
-        $books = DB::table('books')
-            ->where('book_title_id', $book_title_id)
+        $products = DB::table('products')
+            ->where('product_title_id', $product_title_id)
             ->select(
                 'id',
                 'publishing_year',
                 'unit_price',
                 'cost',
-                'cover',
+                'color',
                 'quantity',
-                'page_number'
+                'capacity'
             )
             ->orderBy('publishing_year', 'asc')
             ->get();
 
         $images = DB::table('images')
-            ->whereIn('book_id', $books->pluck('id'))
+            ->whereIn('product_id', $products->pluck('id'))
             ->get();
 
         $review_score = DB::table('reviews')
-            ->whereIn('book_id', $books->pluck('id')->toArray())
+            ->whereIn('product_id', $products->pluck('id')->toArray())
             ->select(
                 DB::raw('AVG(score) as review_score'),
                 DB::raw('COUNT(*) as review_count')
@@ -90,7 +90,7 @@ class SalePageController extends Controller
         $customer_reviews = DB::table('reviews')
             ->join('orders', 'reviews.order_id', '=', 'orders.id')
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
-            ->whereIn('book_id', $books->pluck('id')->toArray())
+            ->whereIn('product_id', $products->pluck('id')->toArray())
             ->select(
                 'customers.name as customer_name',
                 'reviews.score as review_score',
@@ -99,56 +99,56 @@ class SalePageController extends Controller
             )
             ->get();
 
-        return view('ChiTietSanPham', compact('booktitle', 'books', 'images', 'review_score', 'customer_reviews'));
+        return view('ChiTietSanPham', compact('producttitle', 'products', 'images', 'review_score', 'customer_reviews'));
     }
 
-    public function showBookByType($booktype_id)
+    public function showBookByType($producttype_id)
     {
         // Lấy tên thể loại sách
-        $booktypeName = DB::table('booktypes')
+        $producttypeName = DB::table('producttypes')
             ->select('name')
-            ->where('id', $booktype_id)
+            ->where('id', $producttype_id)
             ->first()
             ->name;
 
         // Lấy thông tin sách dựa vào thể loại
-        $books = DB::table('booktypes')
+        $products = DB::table('producttypes')
             ->distinct()
             ->select([
-                'booktypes.id as booktype_id',
-                'booktypes.name as booktype_name',
-                'books.id as book_id',
-                'booktitles.name as book_name',
-                'books.cost as price',
-                'saled_books.total_quantity as quantity',
+                'producttypes.id as producttype_id',
+                'producttypes.name as producttype_name',
+                'products.id as product_id',
+                'producttitles.name as product_name',
+                'products.cost as price',
+                'saled_products.total_quantity as quantity',
             ])
-            ->join('booktitles', 'booktitles.book_type_id', '=', 'booktypes.id')
-            ->join('books', 'books.book_title_id', '=', 'booktitles.id')
-            ->join('order_details', 'order_details.book_id', '=', 'books.id')
+            ->join('producttitles', 'producttitles.product_type_id', '=', 'producttypes.id')
+            ->join('products', 'products.product_title_id', '=', 'producttitles.id')
+            ->join('order_details', 'order_details.product_id', '=', 'products.id')
             ->joinSub(
                 DB::table('order_details')
-                    ->select('books.id as saledbook_id', DB::raw('SUM(order_details.quantity) as total_quantity'))
-                    ->join('books', 'books.id', '=', 'order_details.book_id')
-                    ->groupBy('books.id'),
-                'saled_books',
-                'books.id',
+                    ->select('products.id as saledproduct_id', DB::raw('SUM(order_details.quantity) as total_quantity'))
+                    ->join('products', 'products.id', '=', 'order_details.product_id')
+                    ->groupBy('products.id'),
+                'saled_products',
+                'products.id',
                 '=',
-                'saled_books.saledbook_id'
+                'saled_products.saledproduct_id'
             )
-            ->where('booktypes.id', $booktype_id)
+            ->where('producttypes.id', $producttype_id)
             ->get();
 
         // Lấy ảnh của lần lượt các sách trả về
         $images = [];
-        foreach ($books as $b) {
+        foreach ($products as $b) {
             $image = DB::table('images')
                 ->select('images.url as image_url')
-                ->where('images.book_id', '=', $b->book_id)
+                ->where('images.product_id', '=', $b->product_id)
                 ->get()
                 ->first();
-            $images[$b->book_id] = $image ? $image->image_url : null;
+            $images[$b->product_id] = $image ? $image->image_url : null;
         }
         // dd($images);
-        return view('VanHoc_DanhMuc', compact(['booktypeName', 'books', 'images']));
+        return view('VanHoc_DanhMuc', compact(['producttypeName', 'products', 'images']));
     }
 }

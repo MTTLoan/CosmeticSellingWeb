@@ -18,7 +18,7 @@
                 <div class="coupon_code justify-content-start p-3">
                     <p class="fw-bold">{{ $discount->name }}</p>
                     <p>{{ $discount->description }}</p>
-                    <p>Giảm ngay {{ number_format($discount->value) }} VNĐ khi mua sách bất kỳ trị giá từ
+                    <p>Giảm ngay {{ number_format($discount->value) }} VNĐ khi mua mỹ phẩm bất kỳ trị giá từ
                         {{ number_format($discount->starting_price) }} VNĐ trở lên! Cùng Chapter One khám phá những câu
                         chuyện mới!
                     </p>
@@ -44,12 +44,12 @@
 
 @push('scripts')
 <script>
-    function copyToClipboard(code) {
-        navigator.clipboard.writeText(code).then(function() {
-            alert('Đã sao chép mã: ' + code);
-        }, function(err) {
-            console.error('Không thể sao chép mã: ', err);
-        });
-    }
+function copyToClipboard(code) {
+    navigator.clipboard.writeText(code).then(function() {
+        alert('Đã sao chép mã: ' + code);
+    }, function(err) {
+        console.error('Không thể sao chép mã: ', err);
+    });
+}
 </script>
 @endpush

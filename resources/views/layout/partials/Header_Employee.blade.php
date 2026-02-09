@@ -39,7 +39,7 @@
                                     SẢN PHẨM
                                 </a>
                                 <ul class="collapse list-unstyled" id="productSubmenu">
-                                    <li><a href="{{ route('book.index') }}">Danh mục sản phẩm</a></li>
+                                    <li><a href="{{ route('product.index') }}">Danh mục sản phẩm</a></li>
                                     <li><a>Khuyến mãi</a></li>
                                 </ul>
                             </li>
@@ -73,7 +73,7 @@
                                 <a href="{{ route('account.profile') }}">TÀI KHOẢN</a>
                             </li>
                             <li>
-                                <a href="{{ route('account.logout') }}">ĐĂNG XUẤT</a>
+                                <a href="{{ route('admin.logout') }}">ĐĂNG XUẤT</a>
                             </li>
                         </ul>
                     </div>
@@ -104,9 +104,6 @@
                         </li>
 
                         <li class="nav-item d-flex align-items-center ">
-                            <!-- <button class="nav-link icon-button" id="accountButton">
-                                <i class="bi bi-person-circle"></i>
-                            </button> -->
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i>

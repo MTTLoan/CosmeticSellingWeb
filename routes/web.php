@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\ProductController;
 
 use App\Http\Controllers\SalePageController;
 use App\Http\Controllers\Admin\AdminController;
@@ -15,10 +15,10 @@ use App\Http\Middleware\RedirectIfNotAuthenticated;
 use App\Http\Middleware\RedirectIfNotEmployee;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/book-by-category/book-details/{book_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
-Route::get('/book-by-category/{category}', [SalePageController::class, 'showBookByCategory'])->name('sale.showBookByCategory');
-Route::get('/book-by-type/{booktype_id}', [SalePageController::class, 'showBookByType'])->name('sale.showBookByType');
-Route::get('/book-details/{book_tittle_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
+Route::get('/product-by-category/product-details/{product_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
+Route::get('/product-by-category/{category}', [SalePageController::class, 'showBookByCategory'])->name('sale.showBookByCategory');
+Route::get('/product-by-type/{producttype_id}', [SalePageController::class, 'showBookByType'])->name('sale.showBookByType');
+Route::get('/product-details/{product_title_id}', [SalePageController::class, 'showBookDetails'])->name('sale.showBookDetails');
 Route::get('/discounts', [DiscountController::class, 'listDiscounts'])->name('discounts.list');
 Route::get('/search', [SalePageController::class, 'search'])->name('search');
 
@@ -78,8 +78,8 @@ Route::group(['prefix' => 'admin', 'middleware' => [RedirectIfNotEmployee::class
     Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('admin.salesReport');
     Route::get('/export-sales-report', [AdminController::class, 'exportSalesReport'])->name('admin.exportSalesReport');
 
-    Route::resource('book', BookController::class);
-    Route::get('/book-date-image/{image}', [BookController::class, 'destroyImage'])->name('book.destroyImage');
+    Route::resource('product', ProductController::class);
+    Route::get('/product-date-image/{image}', [ProductController::class, 'destroyImage'])->name('product.destroyImage');
 
     Route::resource('discount', DiscountController::class);
 

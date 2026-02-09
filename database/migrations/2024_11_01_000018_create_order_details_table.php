@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Book;
+use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +18,7 @@ return new class extends Migration
         
             // Khai báo cột khóa ngoại
             $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('book_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
         
             $table->integer('quantity')->default(0);
             $table->integer('price')->default(0);
@@ -30,9 +30,9 @@ return new class extends Migration
                   ->on('orders')
                   ->onDelete('cascade');
         
-            $table->foreign('book_id')
+            $table->foreign('product_id')
                   ->references('id')
-                  ->on('books')
+                  ->on('products')
                   ->onDelete('set null');
         });
     }
@@ -45,4 +45,3 @@ return new class extends Migration
         Schema::dropIfExists('order_details');
     }
 };
-

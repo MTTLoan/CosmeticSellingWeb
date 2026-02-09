@@ -28,16 +28,16 @@
                 @foreach ($order->orderDetail as $detail)
                 <div class="d-flex mb-2 align-items-center">
                     <div class="order-image">
-                        @if($detail->book->images->isNotEmpty())
-                        <img src="{{ asset($detail->book->images->first()->url) }}" alt="Book Image"
+                        @if($detail->product->images->isNotEmpty())
+                        <img src="{{ asset($detail->product->images->first()->url) }}" alt="Product Image"
                             class="img-thumbnail" style="width: 100px; height: auto;">
                         @else
-                        <img src="{{ asset('uploads/products/default.png') }}" alt="Book Image" class="img-thumbnail"
+                        <img src="{{ asset('uploads/products/default.png') }}" alt="Product Image" class="img-thumbnail"
                             style="width: 100px; height: auto;">
                         @endif
                     </div>
                     <div class="order-details flex-grow-1 ms-3">
-                        <h5>{{ $detail->book->bookTitle->name }}</h5>
+                        <h5>{{ $detail->product->productTitle->name }}</h5>
                         <p>Số lượng: {{ $detail->quantity }}</p>
                     </div>
                     <div class="order-price ms-auto">
@@ -72,24 +72,24 @@
 @push('scripts')
 @if(session('success'))
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: `{{ session('success') }}`,
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: `{{ session('success') }}`,
     });
+});
 </script>
 @endif
 @if(session('error'))
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi',
-            text: `{{ session('error') }}`,
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: `{{ session('error') }}`,
     });
+});
 </script>
 @endif
 

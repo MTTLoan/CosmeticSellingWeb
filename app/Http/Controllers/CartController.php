@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
-use App\Models\Book;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -21,8 +21,8 @@ class CartController extends Controller
         $userId = auth('cus')->id();
 
         // Lấy các item trong giỏ hàng và ảnh đầu tiên của mỗi cuốn sách
-        $cartItems = Cart::with(['book' => function ($query) {
-            $query->with(['bookTitle', 'images' => function ($query) {
+        $cartItems = Cart::with(['product' => function ($query) {
+            $query->with(['productTitle', 'images' => function ($query) {
                 $query->orderBy('id')->limit(1); // Lấy ảnh đầu tiên
             }]);
         }])
@@ -31,7 +31,7 @@ class CartController extends Controller
 
         $totalQuantity = $cartItems->sum('quantity');
         $totalPrice = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->book->unit_price;
+            return $item->quantity * $item->product->unit_price;
         });
 
         return view('GioHang', compact('cartItems', 'totalQuantity', 'totalPrice'));
@@ -42,12 +42,12 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'book_id' => 'required|exists:books,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
         $cartItem = Cart::where('customer_id', auth('cus')->id())
-            ->where('book_id', $validated['book_id'])
+            ->where('product_id', $validated['product_id'])
             ->first();
 
         if ($cartItem) {
@@ -58,7 +58,7 @@ class CartController extends Controller
             // Nếu sản phẩm chưa tồn tại trong giỏ hàng, tạo mới
             $cartItem = Cart::create([
                 'customer_id' => auth('cus')->id(),
-                'book_id' => $validated['book_id'],
+                'product_id' => $validated['product_id'],
                 'quantity' => $validated['quantity'],
             ]);
         }

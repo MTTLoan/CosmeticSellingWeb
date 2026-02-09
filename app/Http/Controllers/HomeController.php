@@ -11,79 +11,79 @@ class HomeController extends Controller
     // public function index()
     // {
     //     // Lấy tất cả các loại sách (book types)
-    //     $bookTypes = DB::table('booktypes')
-    //         ->select('booktypes.id as booktype_id', 'booktypes.name as booktype_name')
+    //     $productTypes = DB::table('producttypes')
+    //         ->select('producttypes.id as producttype_id', 'producttypes.name as producttype_name')
     //         ->get();
 
-    //     $bookTitles = [];
+    //     $productTitles = [];
 
-    //     foreach ($bookTypes as $bookType) {
+    //     foreach ($productTypes as $productType) {
     //         // Lấy thông tin sách cho mỗi loại sách, bao gồm giá, số lượng bán ra, và ảnh của sách có id nhỏ nhất
-    //         $titles = DB::table('booktitles')
-    //             ->join('books', 'booktitles.id', '=', 'books.book_title_id')
-    //             ->leftJoin('order_details', 'books.id', '=', 'order_details.book_id')
-    //             ->leftJoin('images', 'books.id', '=', 'images.book_id')
+    //         $titles = DB::table('producttitles')
+    //             ->join('products', 'producttitles.id', '=', 'products.product_title_id')
+    //             ->leftJoin('order_details', 'products.id', '=', 'order_details.product_id')
+    //             ->leftJoin('images', 'products.id', '=', 'images.product_id')
     //             ->select(
-    //                 'booktitles.id as book_title_id',
-    //                 'booktitles.name as book_title_name',
-    //                 'booktitles.author',
-    //                 'books.unit_price',
+    //                 'producttitles.id as product_title_id',
+    //                 'producttitles.name as product_title_name',
+    //                 'producttitles.author',
+    //                 'products.unit_price',
     //                 DB::raw('COALESCE(SUM(order_details.quantity), 0) as sold_quantity'),
     //                 DB::raw('MIN(images.url) as image_url') // Lấy ảnh có id nhỏ nhất
     //             )
-    //             ->where('booktitles.book_type_id', $bookType->booktype_id)
+    //             ->where('producttitles.product_type_id', $productType->producttype_id)
     //             ->groupBy(
-    //                 'booktitles.id',
-    //                 'booktitles.name',
-    //                 'booktitles.author',
-    //                 'books.unit_price'
+    //                 'producttitles.id',
+    //                 'producttitles.name',
+    //                 'producttitles.author',
+    //                 'products.unit_price'
     //             )
-    //             ->orderBy('booktitles.id', 'asc')
+    //             ->orderBy('producttitles.id', 'asc')
     //             ->limit(10) // Lấy tối đa 10 sách cho mỗi loại sách
     //             ->get();
 
     //         // Thêm các book titles vào mảng theo tên loại sách
-    //         $bookTitles[$bookType->booktype_name] = $titles;
+    //         $productTitles[$productType->producttype_name] = $titles;
     //     }
 
     //     // Trả về view với dữ liệu bookTitles
-    //     return view('home.index', compact('bookTitles'));
+    //     return view('home.index', compact('productTitles'));
     // }
 
     public function index()
     {
         // Lấy tất cả các loại sách (book types)
-        $bookTypes = DB::table('booktypes')->get();
+        $productTypes = DB::table('producttypes')->get();
 
-        $bookTitles = [];
+        $productTitles = [];
 
-        foreach ($bookTypes as $bookType) {
-            $titles = DB::table('booktitles')
-                ->join('books', 'booktitles.id', '=', 'books.book_title_id')
-                ->leftJoin('order_details', 'books.id', '=', 'order_details.book_id')
-                ->join('images', 'books.id', '=', 'images.book_id')
-                ->where('booktitles.book_type_id', $bookType->id)
+        foreach ($productTypes as $productType) {
+            $titles = DB::table('producttitles')
+                ->join('products', 'producttitles.id', '=', 'products.product_title_id')
+                ->leftJoin('order_details', 'products.id', '=', 'order_details.product_id')
+                ->join('images', 'products.id', '=', 'images.product_id')
+                ->where('producttitles.product_type_id', $productType->id)
                 ->select(
-                    'booktitles.id',
-                    'booktitles.name',
-                    'booktitles.author',
-                    DB::raw('MIN(books.unit_price) as unit_price'),
+                    'producttitles.id',
+                    'producttitles.name',
+                    'producttitles.author',
+                    DB::raw('MIN(products.unit_price) as unit_price'),
                     DB::raw('COALESCE(SUM(order_details.quantity), 0) as sold_quantity'),
                     DB::raw('MIN(images.url) as image_url')
                 )
                 ->groupBy(
-                    'booktitles.id',
-                    'booktitles.name',
-                    'booktitles.author',
-                    'booktitles.book_type_id'
+                    'producttitles.id',
+                    'producttitles.name',
+                    'producttitles.author',
+                    'producttitles.product_type_id'
                 )
-                ->orderBy('booktitles.name', 'asc')
+                ->orderBy('producttitles.name', 'asc')
                 ->limit(10) // Lấy tối đa 10 sách cho mỗi loại sách
                 ->get();
 
-            $bookTitles[$bookType->name] = $titles;
+            $productTitles[$productType->name] = $titles;
         }
 
-        return view('home.index', compact('bookTitles'));
+        return view('home.index', compact('productTitles'));
     }
 }

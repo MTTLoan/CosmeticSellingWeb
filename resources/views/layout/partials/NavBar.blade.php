@@ -39,7 +39,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navDropdown1">
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('book.index') }}"
+                                    <a class="dropdown-item" href="{{ route('product.index') }}"
                                         id="productCategoryButton">
                                         <i class="bi bi-list-ul"></i> Danh mục sản phẩm
                                     </a>

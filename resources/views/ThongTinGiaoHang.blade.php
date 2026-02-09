@@ -5,24 +5,24 @@
 <div class="shipping_infor_container body-container">
     @if(session('success'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công',
-                text: `{{ session('success') }}`,
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: `{{ session('success') }}`,
         });
+    });
     </script>
     @endif
     @if(session('error'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi',
-                text: `{{ session('error') }}`,
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: `{{ session('error') }}`,
         });
+    });
     </script>
     @endif
     <form id="personal-info-form" class="form-container" action="{{ route('order.store') }}" method="POST">
@@ -102,7 +102,7 @@
                 <!-- Các trường nhập liệu khác -->
                 <input type="hidden" name="discount_id" id="discount-id">
                 <input type="hidden" name="total_price" id="total_price"
-                    value="{{ $cartItems->sum(function($item) { return $item->quantity * $item->book->unit_price; }) + 15000 }}">
+                    value="{{ $cartItems->sum(function($item) { return $item->quantity * $item->product->unit_price; }) + 15000 }}">
                 <button type="submit" class="btn btn-finish" id="completeOrder">Hoàn tất đơn hàng</button>
             </div>
         </div>
@@ -122,10 +122,10 @@
 
         @foreach ($cartItems as $item)
         <div class="cart-item">
-            <div class="cart-item-name">{{ $item->book->bookTitle->name }}</div>
+            <div class="cart-item-name">{{ $item->product->productTitle->name }}</div>
             <div class="cart-item-quantity">{{ $item->quantity }}</div>
             <div class="cart-item-price">
-                <span class="cart-item-total-price">{{ number_format($item->quantity * $item->book->unit_price) }}
+                <span class="cart-item-total-price">{{ number_format($item->quantity * $item->product->unit_price) }}
                     đ</span>
             </div>
         </div>
@@ -148,7 +148,7 @@
 
         <div class="total">
             <strong>TỔNG CỘNG: </strong> <span id="total-price"
-                data-total-price="{{ $cartItems->sum(function($item) { return $item->quantity * $item->book->unit_price; }) + 15000 }}">{{ number_format($cartItems->sum(function($item) { return $item->quantity * $item->book->unit_price; }) + 15000, 0, ',', '.') }}
+                data-total-price="{{ $cartItems->sum(function($item) { return $item->quantity * $item->product->unit_price; }) + 15000 }}">{{ number_format($cartItems->sum(function($item) { return $item->quantity * $item->product->unit_price; }) + 15000, 0, ',', '.') }}
                 đ</span>
         </div>
     </div>
@@ -161,10 +161,10 @@
 
 @push('scripts')
 <script>
-    const customerProvince = "{{ $customer->province }}";
-    const customerDistrict = "{{ $customer->district }}";
-    const customerWard = "{{ $customer->ward }}";
-    const checkDiscountUrl = "{{ route('check.discount') }}"; // Truyền URL vào JavaScript
+const customerProvince = "{{ $customer->province }}";
+const customerDistrict = "{{ $customer->district }}";
+const customerWard = "{{ $customer->ward }}";
+const checkDiscountUrl = "{{ route('check.discount') }}"; // Truyền URL vào JavaScript
 </script>
 <script src="{{ asset('assets/js/ThongTinGiaoHang.js') }}"></script>
 @endpush

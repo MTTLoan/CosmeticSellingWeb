@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
-use App\Models\BookBranch;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
+use App\Models\ProductBranch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         //
         $customer = auth('cus')->user();
-        $cartItems = Cart::with(['book', 'book.bookTitle', 'book.images'])
+        $cartItems = Cart::with(['product', 'product.productTitle', 'product.images'])
             ->where('customer_id', $customer->id)
             ->get();
 
@@ -50,7 +50,7 @@ class OrderController extends Controller
         ]);
 
         $customer = auth('cus')->user();
-        $cartItems = Cart::with('book')->where('customer_id', $customer->id)->get();
+        $cartItems = Cart::with('product')->where('customer_id', $customer->id)->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống.');
@@ -76,19 +76,19 @@ class OrderController extends Controller
                 foreach ($cartItems as $item) {
                     OrderDetail::create([
                         'order_id' => $order->id,
-                        'book_id' => $item->book_id,
+                        'product_id' => $item->product_id,
                         'quantity' => $item->quantity,
-                        'price' => $item->book->unit_price,
+                        'price' => $item->product->unit_price,
                     ]);
 
-                    // Trừ số lượng sách trong bảng books
-                    $item->book->decrement('quantity', $item->quantity);
+                    // Trừ số lượng sách trong bảng products
+                    $item->product->decrement('quantity', $item->quantity);
 
-                    // Trừ số lượng sách trong bảng books_branches
-                    $bookBranch = BookBranch::where('book_id', $item->book_id)
+                    // Trừ số lượng sách trong bảng products_branches
+                    $productBranch = ProductBranch::where('product_id', $item->product_id)
                         ->first();
-                    if ($bookBranch) {
-                        $bookBranch->decrement('quantity', $item->quantity);
+                    if ($productBranch) {
+                        $productBranch->decrement('quantity', $item->quantity);
                     }
                 }
 
@@ -138,22 +138,22 @@ class OrderController extends Controller
     public function buyNow(Request $request)
     {
         $request->validate([
-            'book_id' => 'required|exists:books,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
         $customer = auth('cus')->user();
-        $book = Book::with('bookTitle', 'images')->findOrFail($request->book_id);
+        $product = Product::with('productTitle', 'images')->findOrFail($request->product_id);
         $quantity = $request->quantity;
-        $totalPrice = $book->unit_price * $quantity;
+        $totalPrice = $product->unit_price * $quantity;
 
-        return view('MuaNgay', compact('customer', 'book', 'quantity', 'totalPrice'));
+        return view('MuaNgay', compact('customer', 'product', 'quantity', 'totalPrice'));
     }
 
     public function buyNowCreate(Request $request)
     {
         $request->validate([
-            'book_id' => 'required|exists:books,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'address' => 'required|string|max:100',
             'ward' => 'required|string|max:100',
@@ -165,10 +165,10 @@ class OrderController extends Controller
         ]);
 
         $customer = auth('cus')->user();
-        $book = Book::findOrFail($request->book_id);
+        $product = Product::findOrFail($request->product_id);
 
         try {
-            DB::transaction(function () use ($request, $customer, $book) {
+            DB::transaction(function () use ($request, $customer, $product) {
                 // Tạo đơn hàng mới
                 $order = Order::create([
                     'type' => 'Website',
@@ -186,20 +186,20 @@ class OrderController extends Controller
                 // Thêm chi tiết đơn hàng và cập nhật số lượng sách
                 OrderDetail::create([
                     'order_id' => $order->id,
-                    'book_id' => $book->id,
+                    'product_id' => $product->id,
                     'quantity' => $request->quantity,
-                    'price' => $book->unit_price,
+                    'price' => $product->unit_price,
                 ]);
 
-                // Trừ số lượng sách trong bảng books
-                $book->decrement('quantity', $request->quantity);
+                // Trừ số lượng sách trong bảng products
+                $product->decrement('quantity', $request->quantity);
 
-                // Trừ số lượng sách trong bảng books_branches
-                $bookBranch = BookBranch::where('book_id', $book->id)
+                // Trừ số lượng sách trong bảng products_branches
+                $productBranch = ProductBranch::where('product_id', $product->id)
                     ->where('branch_id', $customer->branch_id)
                     ->first();
-                if ($bookBranch) {
-                    $bookBranch->decrement('quantity', $request->quantity);
+                if ($productBranch) {
+                    $productBranch->decrement('quantity', $request->quantity);
                 }
             });
 
@@ -217,7 +217,7 @@ class OrderController extends Controller
         }
 
         $customerId = $user->id;
-        $orders = Order::with('orderDetail.book.bookTitle', 'orderDetail.book.images')
+        $orders = Order::with('orderDetail.product.productTitle', 'orderDetail.product.images')
             ->where('customer_id', $customerId)
             ->orderBy('id', 'desc')
             ->get();
@@ -235,10 +235,10 @@ class OrderController extends Controller
         $order->update(['status' => 'Đã hủy']);
 
         foreach ($order->orderDetail as $detail) {
-            $book = $detail->book;
+            $product = $detail->product;
 
-            if ($book) {
-                $book->update(['quantity' => $book->quantity + $detail->quantity]);
+            if ($product) {
+                $product->update(['quantity' => $product->quantity + $detail->quantity]);
             }
         }
 

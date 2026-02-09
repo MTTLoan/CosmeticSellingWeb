@@ -9,9 +9,9 @@ class Image extends Model
 {
     use HasFactory;
     protected $table = 'images';
-    protected $fillable = ['url', 'book_id'];
-    public function book()
+    protected $fillable = ['url', 'product_id'];
+    public function product()
     {
-        return $this->belongsTo(Book::class, 'book_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

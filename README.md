@@ -14,17 +14,17 @@
     <br />
     <a href="https://drive.google.com/drive/folders/1fWcr6jsW1oO4czN8uNXsK3rE8B2KylZX?usp=sharing">View Demo</a>
     ·
-    <a href="https://github.com/MTTLoan/BookSellingWeb/issues">Request Feature</a>
+    <a href="https://github.com/MTTLoan/CosmeticsSellingWeb/issues">Request Feature</a>
   </p>
 </div>
 
 ## Thông tin nhóm
 
--   Nhóm trưởng: Mai Thị Thanh Loan - 22520782 - [Github](https://github.com/MTTLoan)
--   Nhóm phó: Lê Hồng Ngọc Linh - 22520761
--   Thành viên: Trần Nguyễn Bảo Hoàng - 22520478
--   Thành viên: Lê Thiên Kim - 22520728
--   **Giáo viên hướng dẫn: Tạ Việt Phương**
+- Nhóm trưởng: Mai Thị Thanh Loan - 22520782 - [Github](https://github.com/MTTLoan)
+- Nhóm phó: Lê Hồng Ngọc Linh - 22520761
+- Thành viên: Trần Nguyễn Bảo Hoàng - 22520478
+- Thành viên: Lê Thiên Kim - 22520728
+- **Giáo viên hướng dẫn: Tạ Việt Phương**
 
 <!-- ABOUT THE PROJECT -->
 
@@ -36,11 +36,11 @@ Website thương mại điện tử cho nhà sách – Chapter One giúp ngườ
 
 **Tính năng**
 
--   Mua hàng
--   Quản lý sách và danh mục sách
--   Quản lý giỏ hàng
--   Quản lý đơn hàng và hóa đơn
--   Báo cáo thống kê doanh thu và sản phẩm bán chạy
+- Mua hàng
+- Quản lý sách và danh mục sách
+- Quản lý giỏ hàng
+- Quản lý đơn hàng và hóa đơn
+- Báo cáo thống kê doanh thu và sản phẩm bán chạy
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -50,9 +50,9 @@ Website thương mại điện tử cho nhà sách – Chapter One giúp ngườ
 
 Bạn cần phải cài đặt Laravel, Composer và MySQL!
 
--   [Laravel](https://laravel.com/docs/)
--   [Composer](https://getcomposer.org/)
--   [MySQL](https://dev.mysql.com/downloads/)
+- [Laravel](https://laravel.com/docs/)
+- [Composer](https://getcomposer.org/)
+- [MySQL](https://dev.mysql.com/downloads/)
 
 ### Cài đặt
 
@@ -112,9 +112,9 @@ Nếu bạn có gợi ý nào có thể làm cho dự án tốt hơn, hãy fork 
 
 Mai Thị Thanh Loan (Nhóm trưởng) - [@MTTLoan](https://github.com/MTTLoan)
 
-EMAIL: BookSellingWeb@gmail.com
+EMAIL: CosmeticsSellingWeb@gmail.com
 
-Project Link: [https://github.com/MTTLoan/BookSellingWeb](https://github.com/MTTLoan/BookSellingWeb)
+Project Link: [https://github.com/MTTLoan/CosmeticsSellingWeb](https://github.com/MTTLoan/CosmeticsSellingWeb)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Book;
+use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('score')->default(5);
             $table->string('description', 1000)->nullable();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Book::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -32,4 +32,3 @@ return new class extends Migration
         Schema::dropIfExists('reviews');
     }
 };
-

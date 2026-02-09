@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Book;
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('images', function(Blueprint $table) {
             $table->id();
             $table->string('url', 500);
-            $table->foreignIdFor(Book::class, 'book_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class, 'product_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -28,4 +28,3 @@ return new class extends Migration
         Schema::dropIfExists('images');
     }
 };
-

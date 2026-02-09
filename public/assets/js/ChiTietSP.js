@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.add("active");
 
             const price = this.getAttribute("data-price");
-            const pageNumber = this.getAttribute("data-page-number");
+            const capacity = this.getAttribute("data-capacity");
             document.getElementById("priceDisplay").innerText =
                 new Intl.NumberFormat().format(price) + " đ";
         });
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 return;
             }
-            const bookId = activeButton.getAttribute("data-book-id");
+            const productId = activeButton.getAttribute("data-product-id");
             const quantity = document.getElementById("quantity").value;
 
             if (quantity < 1) {
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     .getAttribute("content"),
                             },
                             body: JSON.stringify({
-                                book_id: bookId,
+                                product_id: productId,
                                 quantity: quantity,
                             }),
                         })
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             return;
         }
-        const bookId = activeButton.getAttribute("data-book-id");
+        const productId = activeButton.getAttribute("data-product-id");
         const quantity = document.getElementById("quantity").value;
 
         if (quantity < 1) {
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        document.getElementById("buyNowBookId").value = bookId;
+        document.getElementById("buyNowProductId").value = productId;
         document.getElementById("buyNowQuantity").value = quantity;
 
         document.getElementById("buyNowForm").submit();

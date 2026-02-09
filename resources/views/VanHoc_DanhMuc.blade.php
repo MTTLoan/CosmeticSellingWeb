@@ -1,12 +1,12 @@
 @extends('master.main')
 
-@section('title', 'Thể loại '.$booktypeName)
+@section('title', 'Thể loại '.$producttypeName)
 
 @section('content')
 <div class="container-sm container_product mb-4 mt-4">
     <div
         class="header-container d-flex flex-md-row flex-column justify-content-between align-items-md-end align-items-start mb-3">
-        <h1 class="card-group-title-main fw-bold text-nowrap me-4" data-category="VanHoc">{{ $booktypeName }}</h1>
+        <h1 class="card-group-title-main fw-bold text-nowrap me-4" data-category="VanHoc">{{ $producttypeName }}</h1>
     </div>
 
 
@@ -14,8 +14,8 @@
     <div class="card_group row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
         @foreach ($titles as $title)
         <div class="col">
-            <div class="product p-20 mb-20 rounded w-auto bg-white" data-book-id="{{ $title->id }}">
-                <a href="{{ route('sale.showBookDetails', ['book_tittle_id' => $title->id]) }}"
+            <div class="product p-20 mb-20 rounded w-auto bg-white" data-product-id="{{ $title->id }}">
+                <a href="{{ route('sale.showBookDetails', ['product_title_id' => $title->id]) }}"
                     style="text-decoration: none; color: inherit;">
                     <div class="image_container d-flex align-items-center justify-content-center">
                         <img src="{{ asset($title->image_url) }}" alt="product" class="img-fluid img_book" />

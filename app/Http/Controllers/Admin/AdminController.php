@@ -15,27 +15,27 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-            $branchId = $request->input('branch_id', 'all');
-            $today = now()->toDateString();
-            $yesterday = now()->subDay()->toDateString();
-            $lastMonth = now()->subMonth()->toDateString();
-            $user = auth('web')->user();
-    
-            // Nếu không phải admin hoặc director, chỉ lấy chi nhánh hiện tại
-    if (!in_array($user->role, ['director', 'admin'])) {
-        $branchId = $user->branch_id;
-    }
+        $branchId = $request->input('branch_id', 'all');
+        $today = now()->toDateString();
+        $yesterday = now()->subDay()->toDateString();
+        $lastMonth = now()->subMonth()->toDateString();
+        $user = auth('web')->user();
 
-    $query = Order::query();
+        // Nếu không phải admin hoặc director, chỉ lấy chi nhánh hiện tại
+        if (!in_array($user->role, ['director', 'admin'])) {
+            $branchId = $user->branch_id;
+        }
 
-    // Lọc theo chi nhánh
-    if ($branchId !== 'all') {
-        $query->whereHas('employee', function ($query) use ($branchId) {
-            $query->where('branch_id', $branchId);
-        });
-    }
-    
-            $orderDataToday = $query->select(DB::raw('SUM(total_price) as total_sales, COUNT(id) as total_orders'))
+        $query = Order::query();
+
+        // Lọc theo chi nhánh
+        if ($branchId !== 'all') {
+            $query->whereHas('employee', function ($query) use ($branchId) {
+                $query->where('branch_id', $branchId);
+            });
+        }
+
+        $orderDataToday = $query->select(DB::raw('SUM(total_price) as total_sales, COUNT(id) as total_orders'))
             ->whereDate('created_at', $today)
             ->first();
 
@@ -52,8 +52,8 @@ class AdminController extends Controller
                 });
             })
             ->first();
-    
-            $orderDataLastMonth = Order::query()
+
+        $orderDataLastMonth = Order::query()
             ->select(DB::raw('SUM(total_price) as total_sales'))
             ->whereDate('created_at', $lastMonth)
             ->when($branchId !== 'all' || !in_array($user->role, ['director', 'admin']), function ($query) use ($branchId, $user) {
@@ -66,17 +66,17 @@ class AdminController extends Controller
                 });
             })
             ->first();
-    
+
         $percentChangeYesterday = $orderDataYesterday->total_sales > 0
             ? (($orderDataToday->total_sales - $orderDataYesterday->total_sales) / $orderDataYesterday->total_sales) * 100
             : ($orderDataToday->total_sales > 0 ? 100 : 0);
-    
+
         $percentChangeLastMonth = $orderDataLastMonth->total_sales > 0
             ? (($orderDataToday->total_sales - $orderDataLastMonth->total_sales) / $orderDataLastMonth->total_sales) * 100
             : ($orderDataToday->total_sales > 0 ? 100 : 0);
-    
 
-            $salesByDay = Order::query()
+
+        $salesByDay = Order::query()
             ->select(DB::raw('DAY(created_at) as day, SUM(total_price) as total_sales'))
             ->whereMonth('created_at', now()->month)
             ->when($branchId !== 'all' || !in_array($user->role, ['director', 'admin']), function ($query) use ($branchId, $user) {
@@ -90,8 +90,8 @@ class AdminController extends Controller
             })
             ->groupBy(DB::raw('DAY(created_at)'))
             ->get();
-    
-            $salesByWeek = Order::query()
+
+        $salesByWeek = Order::query()
             ->select(DB::raw('WEEKOFYEAR(created_at) as week, SUM(total_price) as total_sales'))
             ->whereYear('created_at', now()->year)
             ->when($branchId !== 'all' || !in_array($user->role, ['director', 'admin']), function ($query) use ($branchId, $user) {
@@ -105,8 +105,8 @@ class AdminController extends Controller
             })
             ->groupBy(DB::raw('WEEKOFYEAR(created_at)'))
             ->get();
-    
-            $salesByMonth = Order::query()
+
+        $salesByMonth = Order::query()
             ->select(DB::raw('MONTH(created_at) as month, SUM(total_price) as total_sales'))
             ->whereYear('created_at', now()->year)
             ->when($branchId !== 'all' || !in_array($user->role, ['director', 'admin']), function ($query) use ($branchId, $user) {
@@ -120,9 +120,9 @@ class AdminController extends Controller
             })
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->get();
-    
+
         $branches = Branch::all();
-    
+
         if ($request->ajax()) {
             return response()->json([
                 'orderDataToday' => $orderDataToday,
@@ -133,7 +133,7 @@ class AdminController extends Controller
                 'salesByMonth' => $salesByMonth,
             ]);
         }
-    
+
         return view('admin.index', array_merge(
             compact('orderDataToday', 'percentChangeYesterday', 'percentChangeLastMonth', 'branches', 'branchId'),
             [
@@ -154,16 +154,16 @@ class AdminController extends Controller
             DB::raw('DATE(orders.created_at) as sale_date'),
             'branches.name as branch',
             'orders.id as transaction_id',
-            'booktitles.name as book_title',
+            'producttitles.name as product_title',
             DB::raw('SUM(order_details.quantity) as quantity'),
             DB::raw('SUM(order_details.price) as revenue')
         )
-        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        ->join('books', 'order_details.book_id', '=', 'books.id')
-        ->join('booktitles', 'books.book_title_id', '=', 'booktitles.id')
-        ->join('employees', 'orders.employee_id', '=', 'employees.id')
-        ->join('branches', 'employees.branch_id', '=', 'branches.id')
-        ->groupBy('sale_date', 'branch', 'transaction_id', 'book_title');
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->join('producttitles', 'products.product_title_id', '=', 'producttitles.id')
+            ->join('employees', 'orders.employee_id', '=', 'employees.id')
+            ->join('branches', 'employees.branch_id', '=', 'branches.id')
+            ->groupBy('sale_date', 'branch', 'transaction_id', 'product_title');
 
         // Lọc theo chi nhánh của tài khoản đăng nhập nếu không phải là director hoặc admin
         if (!in_array($user->role, ['director', 'admin'])) {
@@ -173,12 +173,12 @@ class AdminController extends Controller
         if ($startDate) {
             $query->whereDate('orders.created_at', $startDate);
         }
-    
+
         $salesData = $query->paginate(20);
-    
+
         return view('admin.salesReport', compact('salesData', 'startDate'));
     }
-    
+
     public function exportSalesReport(Request $request)
     {
         $startDate = $request->input('startDate');
@@ -188,17 +188,17 @@ class AdminController extends Controller
             DB::raw('DATE(orders.created_at) as sale_date'),
             'branches.name as branch',
             'orders.id as transaction_id',
-            'booktitles.name as book_title',
+            'producttitles.name as product_title',
             DB::raw('SUM(order_details.quantity) as quantity'),
             DB::raw('SUM(order_details.price) as revenue')
         )
-        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        ->join('books', 'order_details.book_id', '=', 'books.id')
-        ->join('booktitles', 'books.book_title_id', '=', 'booktitles.id')
-        ->join('employees', 'orders.employee_id', '=', 'employees.id')
-        ->join('branches', 'employees.branch_id', '=', 'branches.id')
-        ->groupBy('sale_date', 'branch', 'transaction_id', 'book_title');
-    
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->join('producttitles', 'products.product_title_id', '=', 'producttitles.id')
+            ->join('employees', 'orders.employee_id', '=', 'employees.id')
+            ->join('branches', 'employees.branch_id', '=', 'branches.id')
+            ->groupBy('sale_date', 'branch', 'transaction_id', 'product_title');
+
         if (!in_array($user->role, ['director', 'admin'])) {
             $query->where('employees.branch_id', $user->branch_id);
         }
