@@ -13,17 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
-        // Trust proxy headers (required on Render / reverse-proxy deployments)
-        // so asset() / url() generate HTTPS links correctly.
-        $middleware->trustProxies(at: '*');
-
-        // Keep Laravel default middleware stack and append custom ones.
-        $middleware->append([
-            RedirectIfNotAuthenticated::class,
-            RedirectIfNotEmployee::class,
-            CheckRole::class,
-        ]);
+    ->withMiddleware(function () {
+        // Thêm middleware vào trong cấu hình
+        return [
+            \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+            \App\Http\Middleware\RedirectIfNotEmployee::class,  // Add the RedirectIfNotEmployee middleware
+            \App\Http\Middleware\CheckRole::class,  // Add the CheckRole middleware
+        ];
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
