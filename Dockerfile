@@ -6,20 +6,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql mbstring bcmath exif pcntl gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 2) Cài Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 # 3) Thư mục làm việc
-WORKDIR /var/www
-
+WORKDIR /app
 # 4) Copy source
 COPY . .
 
-# 5) Cài PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
-
 # 6) Build Vite assets
-RUN npm install && npm run build
+RUN npm install
 
 # 7) Quyền ghi cho Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache

@@ -39,6 +39,11 @@ class Product extends Model
         return $this->hasMany(Image::class, 'product_id');
     }
 
+    public function coverImage()
+    {
+        return $this->hasOne(Image::class)->oldest('id');
+    }
+
     public function goodsReceipt()
     {
         return $this->belongsToMany(GoodsReceipt::class, 'goods_receipt_details', 'product_id', 'goods_receipt_detail_id')

@@ -22,9 +22,7 @@ class CartController extends Controller
 
         // Lấy các item trong giỏ hàng và ảnh đầu tiên của mỗi cuốn sách
         $cartItems = Cart::with(['product' => function ($query) {
-            $query->with(['productTitle', 'images' => function ($query) {
-                $query->orderBy('id')->limit(1); // Lấy ảnh đầu tiên
-            }]);
+            $query->with(['productTitle', 'coverImage']);
         }])
             ->where('customer_id', $userId)
             ->get();

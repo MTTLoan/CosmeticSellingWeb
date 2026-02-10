@@ -14,7 +14,7 @@
             <div class="cart-item d-flex mt-3 align-items-center justify-content-between" id="item{{ $item->id }}">
                 <div class="d-flex justify-content-start" style="width: 60%;">
                     @if($item->product->images->isNotEmpty())
-                    <img src="{{ $item->product->images->first()->url }}" alt="{{ $item->product->productTitle->name }}"
+                    <img src="{{ $item->product->coverImage->url }}" alt="{{ $item->product->productTitle->name }}"
                         class="cart-item-image">
                     @else
                     <img src="{{ asset('uploads/products/default.png') }}" alt="Default Image" class="cart-item-image">
