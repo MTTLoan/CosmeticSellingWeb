@@ -12,10 +12,10 @@ WORKDIR /app
 COPY . .
 
 # 6) Build Vite assets
-RUN npm install && npm run build
+RUN npm install
 
 # 7) Quyền ghi cho Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache public/build
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 # 8) Port cho Render
 EXPOSE 10000
