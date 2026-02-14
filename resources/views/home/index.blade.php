@@ -40,7 +40,7 @@
             <!-- Button Section with Border -->
             <div class="button-section border rounded d-flex justify-content-between mb-3 p-1 d-none d-md-flex">
                 @if(auth('cus')->check())
-                <button class="btn me-3"><a href="{{ route('order.orderinfor') }}"
+                <button class="btn me-3" data-target="Order"><a href="{{ route('order.orderinfor') }}"
                         class="text-black text-decoration-none">ĐƠN HÀNG</a></button>
                 @endif
                 <button class="btn me-3" data-target="Voucher"><a href="{{ route('discounts.list') }}"
