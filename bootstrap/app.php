@@ -13,13 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function () {
-        // Thêm middleware vào trong cấu hình
-        return [
-            \App\Http\Middleware\RedirectIfNotAuthenticated::class,
-            \App\Http\Middleware\RedirectIfNotEmployee::class,  // Add the RedirectIfNotEmployee middleware
-            \App\Http\Middleware\CheckRole::class,  // Add the CheckRole middleware
-        ];
+    ->withMiddleware(function (Middleware $middleware) {
+        // Giữ nguyên middleware mặc định của Laravel và chỉ khai báo alias custom.
+        $middleware->alias([
+            'auth.cus' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+            'auth.employee' => \App\Http\Middleware\RedirectIfNotEmployee::class,
+            'check.role' => \App\Http\Middleware\CheckRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

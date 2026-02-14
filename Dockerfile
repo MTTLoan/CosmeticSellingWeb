@@ -11,9 +11,6 @@ WORKDIR /app
 # 4) Copy source
 COPY . .
 
-# 6) Build Vite assets
-RUN npm install
-
 # 7) Quyền ghi cho Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 
