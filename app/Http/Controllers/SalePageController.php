@@ -102,53 +102,58 @@ class SalePageController extends Controller
         return view('ChiTietSanPham', compact('producttitle', 'products', 'images', 'review_score', 'customer_reviews'));
     }
 
-    public function showProductByType($producttype_id)
+    public function showProductByType(Request $request, $producttype_id)
     {
-        // Lấy tên thể loại sách
+        // Lấy tên thể loại (product type name)
         $producttypeName = DB::table('producttypes')
             ->select('name')
             ->where('id', $producttype_id)
             ->first()
-            ->name;
+            ->name ?? 'Danh mục sản phẩm';
 
-        // Lấy thông tin sách dựa vào thể loại
-        $products = DB::table('producttypes')
-            ->distinct()
-            ->select([
-                'producttypes.id as producttype_id',
-                'producttypes.name as producttype_name',
-                'products.id as product_id',
-                'producttitles.name as product_name',
-                'products.cost as price',
-                'saled_products.total_quantity as quantity',
-            ])
-            ->join('producttitles', 'producttitles.product_type_id', '=', 'producttypes.id')
-            ->join('products', 'products.product_title_id', '=', 'producttitles.id')
-            ->join('order_details', 'order_details.product_id', '=', 'products.id')
-            ->joinSub(
-                DB::table('order_details')
-                    ->select('products.id as saledproduct_id', DB::raw('SUM(order_details.quantity) as total_quantity'))
-                    ->join('products', 'products.id', '=', 'order_details.product_id')
-                    ->groupBy('products.id'),
-                'saled_products',
-                'products.id',
-                '=',
-                'saled_products.saledproduct_id'
+        $sort_by = $request->input('sort_by', 'name_asc');
+
+        // Query lấy danh sách sản phẩm theo producttype_id (giống hệt logic home page)
+        $titles = DB::table('producttitles')
+            ->join('products', 'producttitles.id', '=', 'products.product_title_id')
+            ->leftJoin('order_details', 'products.id', '=', 'order_details.product_id')
+            ->join('images', 'products.id', '=', 'images.product_id')
+            ->where('producttitles.product_type_id', $producttype_id)
+            ->select(
+                'producttitles.id',
+                'producttitles.name',
+                DB::raw('MIN(products.unit_price) as unit_price'),
+                DB::raw('COALESCE(SUM(order_details.quantity), 0) as sold_quantity'),
+                DB::raw('MIN(images.url) as image_url')
             )
-            ->where('producttypes.id', $producttype_id)
-            ->get();
+            ->groupBy(
+                'producttitles.id',
+                'producttitles.name',
+                'producttitles.product_type_id'
+            );
 
-        // Lấy ảnh của lần lượt các sách trả về
-        $images = [];
-        foreach ($products as $b) {
-            $image = DB::table('images')
-                ->select('images.url as image_url')
-                ->where('images.product_id', '=', $b->product_id)
-                ->get()
-                ->first();
-            $images[$b->product_id] = $image ? $image->image_url : null;
-        }
-        // dd($images);
-        return view('VanHoc_DanhMuc', compact(['producttypeName', 'products', 'images']));
+        // Áp dụng sắp xếp
+        switch ($sort_by) {
+            case 'price_asc':
+                $titles->orderBy('unit_price', 'asc');
+                break;
+            case 'price_desc':
+                $titles->orderBy('unit_price', 'desc');
+                break;
+            case 'sold_desc':
+                $titles->orderBy('sold_quantity', 'desc');
+                break;
+            case 'name_asc':
+            default:
+                $titles->orderBy('producttitles.name', 'asc');
+                break;
+        };
+
+        $titles = $titles->get();
+
+        return view('VanHoc_DanhMuc', compact('producttypeName', 'titles', 'sort_by', 'producttype_id'));
     }
+
+    // app/Http/Controllers/SalePageController.php (only the method)
+
 }

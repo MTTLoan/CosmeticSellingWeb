@@ -7,6 +7,18 @@
     <div
         class="header-container d-flex flex-md-row flex-column justify-content-between align-items-md-end align-items-start mb-3">
         <h1 class="card-group-title-main fw-bold text-nowrap me-4" data-category="VanHoc">{{ $producttypeName }}</h1>
+        <div class="filter-group">
+            <span class="filter-option"><i class="bi bi-sort-down">Sắp xếp theo:</i></span>
+            <form id="filterForm" class="d-flex"
+                action="{{ route('sale.showProductByType', ['producttype_id' => $producttype_id]) }}" method="GET">
+                <select class="form-select me-2" name="sort_by"
+                    onchange="document.getElementById('filterForm').submit();">
+                    <option value="price_asc" {{ $sort_by == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                    <option value="price_desc" {{ $sort_by == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
+                    <option value="sold_desc" {{ $sort_by == 'sold_desc' ? 'selected' : '' }}>Bán chạy nhất</option>
+                </select>
+            </form>
+        </div>
     </div>
 
 

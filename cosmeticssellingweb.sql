@@ -281,14 +281,15 @@ CREATE TABLE `discounts` (
 INSERT INTO `discounts` (`id`, `name`, `type`, `code`, `start_date`, `end_date`, `value`, `starting_price`, `created_at`, `updated_at`) VALUES
 (1, 'Ngày Sách và Văn hóa đọc 2023', 'Cửa hàng', 'CH01', '2023-04-20', '2023-04-21', 50000, 200000, NULL, NULL),
 (2, 'Ngày Sách và Văn hóa đọc 2024', 'Cửa hàng', 'CH02', '2024-04-20', '2024-04-21', 50000, 200000, NULL, NULL),
-(3, 'MÃ GIẢM 20K', 'Website', 'WS01', '2019-03-30', '2025-01-01', 20000, 200000, NULL, NULL),
-(4, 'MÃ GIẢM 10K', 'Website', 'WS02', '2019-03-31', '2025-01-02', 10000, 100000, NULL, NULL),
-(5, 'MÃ GIẢM 30K', 'Website', 'WS03', '2019-04-01', '2025-01-03', 30000, 350000, NULL, NULL),
+(3, 'MÃ GIẢM 20K', 'Website', 'WS01', '2025-01-01', '2025-04-01', 20000, 200000, NULL, NULL),
+(4, 'MÃ GIẢM 10K', 'Website', 'WS02', '2026-01-01', '2026-04-01', 10000, 100000, NULL, NULL),
+(5, 'MÃ GIẢM 30K', 'Website', 'WS03', '2026-02-01', '2026-04-01', 30000, 350000, NULL, NULL),
 (6, 'Khai trương chi nhánh Quận 1', 'Cửa hàng', 'CH03', '2019-04-15', '2019-04-21', 50000, 200000, NULL, NULL),
 (7, 'Khai trương chi nhánh Quận Tân Phú', 'Cửa hàng', 'CH04', '2021-11-20', '2021-11-26', 50000, 200000, NULL, NULL),
 (8, 'Khai trương chi nhánh Quận 3', 'Cửa hàng', 'CH05', '2022-12-01', '2022-12-07', 50000, 200000, NULL, NULL),
 (9, 'Khai trương chi nhánh Thủ Đức', 'Cửa hàng', 'CH06', '2022-07-01', '2022-07-07', 50000, 200000, NULL, NULL);
-
+(10, 'MÃ GIẢM 50K', 'Website', 'WS04', '2026-02-15', '2026-04-01', 50000, 100000, NULL, NULL),
+(11, 'MÃ GIẢM 100K', 'Website', 'WS05', '2026-02-15', '2026-04-01', 100000, 500000, NULL, NULL);
 -- --------------------------------------------------------
 
 --

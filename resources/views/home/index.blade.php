@@ -1,3 +1,5 @@
+<!-- resources/home/index.blade.php -->
+
 @extends('master.main')
 
 @section('title', 'Trang chủ')
@@ -14,24 +16,20 @@
             </div>
 
             <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#ChamSocDaMat" class="d-block p-1">CHĂM SÓC DA MẶT</a>
+                @foreach ($categories as $category => $types)
+                <li class="list-group-item category-item">
+                    <a href="#{{ str_replace(' ', '', $category) }}"
+                        class="d-block p-1 category-link">{{ mb_strtoupper($category, 'UTF-8') }}</a>
+                    <ul class="submenu list-group d-none">
+                        @foreach ($types as $type)
+                        <li class="list-group-item">
+                            <a href="{{ route('sale.showProductByType', $type->id) }}"
+                                class="d-block p-1">{{ $type->name }}</a>
+                        </li>
+                        @endforeach
+                    </ul>
                 </li>
-                <li class="list-group-item">
-                    <a href="#TrangDiem" class="d-block p-1">TRANG ĐIỂM</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#ChamSocCoThe" class="d-block p-1">CHĂM SÓC CƠ THỂ</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#ChamSocToc" class="d-block p-1">CHĂM SÓC TÓC</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#NuocHoa" class="d-block p-1">NƯỚC HOA</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#DungCuLamDep" class="d-block p-1">DỤNG CỤ LÀM ĐẸP</a>
-                </li>
+                @endforeach
             </ul>
         </aside>
 
@@ -71,16 +69,16 @@
     </div>
 
     <!-- Loop through each product category and display products -->
-    @foreach ($productTitles as $category => $titles)
-    <div class="category-section" id="{{ str_replace(' ', '', $category) }}">
+    @foreach ($productTitles as $pt)
+    <div class="category-section" id="{{ str_replace(' ', '', $pt['name']) }}">
         <h4 class="card-group-title">
-            <span class="card-group-title-main">{{ mb_strtoupper($category, 'UTF-8')  }}</span>
-            <a href="#" class="card-group-link">Xem thêm ></a>
+            <span class="card-group-title-main">{{ mb_strtoupper($pt['name'], 'UTF-8')  }}</span>
+            <a href="{{ route('sale.showProductByType', $pt['id']) }}" class="card-group-link">Xem thêm ></a>
         </h4>
 
         <!-- Product Cards -->
         <div class="card_group row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
-            @foreach ($titles as $title)
+            @foreach ($pt['titles'] as $title)
             <div class="col">
                 <div class="product p-20 mb-20 rounded w-auto bg-white" data-product-id="{{ $title->id }}">
                     <a href="{{ route('sale.showProductDetails', ['product_title_id' => $title->id]) }}"
@@ -115,6 +113,26 @@
 
 @push('styles')
 <link href="{{ asset('assets/css/home/index.css') }}" rel="stylesheet">
+<style>
+.category-item {
+    position: relative;
+}
+
+.submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 250px;
+    z-index: 1000;
+    border: 1px solid #ddd;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-item:hover .submenu {
+    display: block !important;
+}
+</style>
 @endpush
 
 @push('scripts')

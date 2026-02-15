@@ -202,8 +202,11 @@ class DiscountController extends Controller
     }
 
     public function listDiscounts()
-    {
-        $discounts = Discount::where('type', 'Website')->get();
-        return view('LayVoucher', compact('discounts'));
-    }
+{
+    $discounts = Discount::where('type', 'Website')
+        ->where('start_date', '<=', now())
+        ->where('end_date', '>=', now())
+        ->get();
+    return view('LayVoucher', compact('discounts'));
+}
 }
