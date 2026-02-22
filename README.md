@@ -4,12 +4,11 @@
 <br />
 <div align="center">
 
-  <h3 align="center">CHAPTER ONE - WEBSITE BÁN SÁCH</h3>
+  <h3 align="center">CHAPTER ONE - WEBSITE BÁN MỸ PHẨM</h3>
 
   <p align="center">
-    Website thương mại điện tử đáng tin cậy trong việc cung cấp sách!
+    Website thương mại điện tử đáng tin cậy trong cung cấp mỹ phẩm!
     <br />
-    <a href="https://lle858756.wixsite.com/chapterone"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://drive.google.com/drive/folders/1fWcr6jsW1oO4czN8uNXsK3rE8B2KylZX?usp=sharing">View Demo</a>
@@ -24,23 +23,14 @@
 - Nhóm phó: Lê Hồng Ngọc Linh - 22520761
 - Thành viên: Trần Nguyễn Bảo Hoàng - 22520478
 - Thành viên: Lê Thiên Kim - 22520728
-- **Giáo viên hướng dẫn: Tạ Việt Phương**
 
 <!-- ABOUT THE PROJECT -->
 
 ## Tổng quan về dự án
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/MTTLoan/DeadlineBeaters)
+[![Product Name Screen Shot][product-screenshot]](https://github.com/MTTLoan/CosmeticSellingWeb.git)
 
-Website thương mại điện tử cho nhà sách – Chapter One giúp người dùng dễ dàng tìm kiếm, đồng thời giúp quản lý và điều hành nhanh và hiệu quả hơn. Website không chỉ mang lại trải nghiệm mua sắm tiện lợi mà còn hỗ trợ quản lý hiệu quả cho nhà sách.
-
-**Tính năng**
-
-- Mua hàng
-- Quản lý sách và danh mục sách
-- Quản lý giỏ hàng
-- Quản lý đơn hàng và hóa đơn
-- Báo cáo thống kê doanh thu và sản phẩm bán chạy
+Website thương mại điện tử – Chapter One giúp người dùng dễ dàng tìm kiếm, đồng thời giúp quản lý và điều hành nhanh và hiệu quả hơn. Website không chỉ mang lại trải nghiệm mua sắm tiện lợi mà còn hỗ trợ quản lý hiệu quả.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -69,7 +59,7 @@ Bạn cần phải cài đặt Laravel, Composer và MySQL!
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=qlthuexe
+    DB_DATABASE=cosmeticssellingweb
     DB_USERNAME=root
     DB_PASSWORD=yourpassword
     ```

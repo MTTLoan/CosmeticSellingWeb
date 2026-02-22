@@ -3,19 +3,19 @@
 @section('title', 'Quản lý sản phẩm')
 
 @section('content')
-<div class="container-book container-sm p-0">
+<div class="container-product container-sm p-0">
     <div class="row">
         <div class="sidebar col-md-3 d-none d-md-block">
             <p class="fs-3 fw-bold">Sản phẩm</p>
 
             <!-- Nút Xóa bộ lọc -->
             <div class="filter_reset bg-white p-3 rounded-2 mb-4">
-                <form method="GET" action="{{ route('book.index') }}">
+                <form method="GET" action="{{ route('product.index') }}">
                     <button type="submit" class="btn btn-delete-filter w-100">Xóa bộ lọc</button>
                 </form>
             </div>
 
-            <form method="GET" action="{{ route('book.index') }}" id="filterForm">
+            <form method="GET" action="{{ route('product.index') }}" id="filterForm">
                 <!-- Số lượng trong kho -->
                 <div class="filter_quantity bg-white p-3 rounded-2 mb-4">
                     <label for="filter_quantity" class="form-label d-flex justify-content-between fw-bold ps-0"
@@ -30,20 +30,20 @@
                 </div>
 
                 <!-- Thể loại -->
-                <div class="filter_bookType bg-white p-3 rounded-2 mb-4">
-                    <label for="filter_bookType" class="form-label d-flex justify-content-between fw-bold ps-0"
+                <div class="filter_productType bg-white p-3 rounded-2 mb-4">
+                    <label for="filter_productType" class="form-label d-flex justify-content-between fw-bold ps-0"
                         id="headingTwo">
                         Thể loại
                     </label>
                     <div class="ps-2">
-                        @foreach ($bookTypes as $bookType)
+                        @foreach ($productTypes as $productType)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="filter_bookType[]"
-                                value="{{ $bookType->id }}" id="bookType{{ $bookType->id }}"
-                                {{ in_array($bookType->id, request('filter_bookType', [])) ? 'checked' : '' }}
+                            <input class="form-check-input" type="checkbox" name="filter_productType[]"
+                                value="{{ $productType->id }}" id="productType{{ $productType->id }}"
+                                {{ in_array($productType->id, request('filter_productType', [])) ? 'checked' : '' }}
                                 onchange="document.getElementById('filterForm').submit();" />
                             <label class="form-check-label"
-                                for="bookType{{ $bookType->id }}">{{ $bookType->name }}</label>
+                                for="productType{{ $productType->id }}">{{ $productType->name }}</label>
                         </div>
                         @endforeach
                     </div>
@@ -62,10 +62,10 @@
         <div class="content col-md-9">
             <!-- Tìm kiếm -->
             <div class="group-top row d-flex justify-content-end">
-                <form method="GET" action="{{ route('book.index') }}" class="col-md-6">
+                <form method="GET" action="{{ route('product.index') }}" class="col-md-6">
                     <div class="search d-flex mb-3">
                         <input type="text" name="search" class="form-control me-1"
-                            placeholder="Tìm kiếm theo tên sách hoặc tên tác giả" value="{{ request('search') }}" />
+                            placeholder="Tìm kiếm theo tên mỹ phẩm hoặc thương hiệu" value="{{ request('search') }}" />
                         <button class="btn btn_search text-nowrap" type="submit">Tìm kiếm</button>
                     </div>
                 </form>
@@ -78,11 +78,11 @@
                             filter_alt
                         </span>
                     </button>
-                    @can('create', App\Models\Book::class)
+                    @can('create', App\Models\Product::class)
                     <!-- Button add/import -->
                     <div class="button d-flex justify-content-end w-100">
                         <a class="btn btn_add me-2 d-flex align-items-center text-nowrap" id="btnAdd"
-                            href="{{ route('book.create') }}">
+                            href="{{ route('product.create') }}">
                             <span class="material-symbols-outlined add"> add </span>
                             Thêm
                         </a>
@@ -97,8 +97,8 @@
                     <thead>
                         <tr>
                             <th scope="serial" style="min-width: 40px">ID</th>
-                            <th scope="book_title" style="min-width: 140px">Tên sách</th>
-                            <th scope="author_name" style="min-width: 120px">Tác giả</th>
+                            <th scope="product_title" style="min-width: 140px">Tên mỹ phẩm</th>
+                            <th scope="author_name" style="min-width: 120px">Thương hiệu</th>
                             <th scope="quantity" style="min-width: 65px">SL</th>
                             <th scope="cost" style="min-width: 99px">Chi phí</th>
                             <th scope="price" style="min-width: 80px">Đơn giá</th>
@@ -107,29 +107,29 @@
                     </thead>
                     <tbody>
                         <!-- -->
-                        @foreach($books as $book)
-                        @can('view', $book)
+                        @foreach($products as $product)
+                        @can('view', $product)
                         <tr>
-                            <td>{{ $book->id }}</td>
-                            <td>{{ $book->bookTitle->name }}</td>
-                            <td>{{ $book->bookTitle->author }}</td>
-                            <td>{{ $book->branch_quantity ?? $book->quantity }}</td>
-                            <td>{{ $book->cost }}</td>
-                            <td>{{ $book->unit_price }}</td>
+                            <td>{{ $product->id }}</td>
+                            <td>{{ $product->productTitle->name }}</td>
+                            <td>{{ $product->productTitle->author }}</td>
+                            <td>{{ $product->branch_quantity ?? $product->quantity }}</td>
+                            <td>{{ $product->cost }}</td>
+                            <td>{{ $product->unit_price }}</td>
                             <td>
                                 <a type="button" class="btn_preview p-0" id="btnPreview"
-                                    href="{{ route('book.show', $book->id) }}">
+                                    href="{{ route('product.show', $product->id) }}">
                                     <span class="material-symbols-outlined details">visibility</span>
                                 </a>
-                                @can('update', $book)
+                                @can('update', $product)
                                 <a type="button" class="btn_edit p-0" id="btnEdit"
-                                    href="{{ route('book.edit', $book->id) }}">
+                                    href="{{ route('product.edit', $product->id) }}">
                                     <span class="material-symbols-outlined edit">border_color</span>
                                 </a>
                                 @endcan
 
-                                @can('delete', $book)
-                                <form action="{{ route('book.destroy', $book->id) }}" method="POST"
+                                @can('delete', $product)
+                                <form action="{{ route('product.destroy', $product->id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -150,7 +150,7 @@
 
                 <!-- Hiển thị liên kết phân trang -->
                 <div class="d-flex justify-content-center">
-                    {{ $books->links('pagination::bootstrap-5') }}
+                    {{ $products->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
@@ -173,10 +173,10 @@
                     <form id="authorForm">
                         <div class="mb-3">
                             <label for="filter_author" class="form-label d-flex justify-content-between fw-bold">Tên
-                                tác giả
+                                thương hiệu
                             </label>
                             <input class="form-control" list="author_name" name="filter_author" id="filter_author"
-                                placeholder="Chọn tác giả" onchange="loadTableData()" />
+                                placeholder="Chọn thương hiệu" onchange="loadTableData()" />
                             <datalist class="author_name" id="author_name">
                                 <option value="NXB Dân trí"></option>
                                 <option value="NXB Kim Đồng"></option>
@@ -250,18 +250,18 @@
 @endsection
 
 @push('styles')
-<link href="{{ asset('assets/css/admin/book/index.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/admin/product/index.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-<script src="{{ asset('assets/js/admin/book/index.js') }}"></script>
+<script src="{{ asset('assets/js/admin/product/index.js') }}"></script>
 <script>
-    function submitFilterForm() {
-        const filterQuantity = document.querySelector('input[name="filter_quantity"]').value;
-        if (filterQuantity === '' || filterQuantity === null || filterQuantity < 0 || filterQuantity > 1000) {
-            return;
-        }
-        document.getElementById('filterForm').submit();
+function submitFilterForm() {
+    const filterQuantity = document.querySelector('input[name="filter_quantity"]').value;
+    if (filterQuantity === '' || filterQuantity === null || filterQuantity < 0 || filterQuantity > 1000) {
+        return;
     }
+    document.getElementById('filterForm').submit();
+}
 </script>
 @endpush

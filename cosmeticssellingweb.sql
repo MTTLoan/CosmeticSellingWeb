@@ -287,7 +287,7 @@ INSERT INTO `discounts` (`id`, `name`, `type`, `code`, `start_date`, `end_date`,
 (6, 'Khai trương chi nhánh Quận 1', 'Cửa hàng', 'CH03', '2019-04-15', '2019-04-21', 50000, 200000, NULL, NULL),
 (7, 'Khai trương chi nhánh Quận Tân Phú', 'Cửa hàng', 'CH04', '2021-11-20', '2021-11-26', 50000, 200000, NULL, NULL),
 (8, 'Khai trương chi nhánh Quận 3', 'Cửa hàng', 'CH05', '2022-12-01', '2022-12-07', 50000, 200000, NULL, NULL),
-(9, 'Khai trương chi nhánh Thủ Đức', 'Cửa hàng', 'CH06', '2022-07-01', '2022-07-07', 50000, 200000, NULL, NULL);
+(9, 'Khai trương chi nhánh Thủ Đức', 'Cửa hàng', 'CH06', '2022-07-01', '2022-07-07', 50000, 200000, NULL, NULL),
 (10, 'MÃ GIẢM 50K', 'Website', 'WS04', '2026-02-15', '2026-04-01', 50000, 100000, NULL, NULL),
 (11, 'MÃ GIẢM 100K', 'Website', 'WS05', '2026-02-15', '2026-04-01', 100000, 500000, NULL, NULL);
 -- --------------------------------------------------------

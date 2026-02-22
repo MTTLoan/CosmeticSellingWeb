@@ -44,10 +44,10 @@ class ProductController extends Controller
             });
         }
 
-        if ($request->has('filter_bookType')) {
-            $filterBookType = $request->input('filter_bookType');
-            $query->whereHas('productTitle.productType', function ($q) use ($filterBookType) {
-                $q->whereIn('id', $filterBookType);
+        if ($request->has('filter_productType')) {
+            $filterProductType = $request->input('filter_productType');
+            $query->whereHas('productTitle.productType', function ($q) use ($filterProductType) {
+                $q->whereIn('id', $filterProductType);
             });
         }
 
@@ -57,30 +57,30 @@ class ProductController extends Controller
         }
 
         if ($employee->role === 'admin') {
-            // Admin xem tất cả sách
+            // Admin xem tất cả sản phẩm
             $products = $query->orderBy('id', 'asc')->paginate(20);
         } else {
-            // Staff và Branch Manager chỉ xem sách thuộc chi nhánh của mình
+            // Staff và Branch Manager chỉ xem sản phẩm thuộc chi nhánh của mình
             $products = Product::join('products_branches', 'products.id', '=', 'products_branches.product_id')
                 ->where('products_branches.branch_id', $employee->branch_id)
                 ->select('products.*', 'products_branches.quantity as branch_quantity')
                 ->orderBy('id', 'asc')->paginate(20);
         }
 
-        $productTypes = ProductType::all(); // Lấy tất cả các thể loại sách để hiển thị trong form tìm kiếm
-        return view('admin.book.index', compact('products', 'productTypes'));
+        $productTypes = ProductType::all(); // Lấy tất cả các thể loại sản phẩm để hiển thị trong form tìm kiếm
+        return view('admin.product.index', compact('products', 'productTypes'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Kiểm tra quyền 'create' trên model Book
+        // Kiểm tra quyền 'create' trên model Product
         $this->authorize('create', Product::class);
 
         $productTypes = ProductType::orderBy('id', 'asc')->select('id', 'name')->get();
         $suppliers = Supplier::orderBy('id', 'asc')->select('id', 'name')->get();
-        return view('admin.book.create', compact('productTypes', 'suppliers'));
+        return view('admin.product.create', compact('productTypes', 'suppliers'));
     }
 
     /**
@@ -109,7 +109,7 @@ class ProductController extends Controller
         ]);
 
         try {
-            // Kiểm tra xem tên sách đã tồn tại trong BookTitle chưa
+            // Kiểm tra xem tên sản phẩm đã tồn tại trong ProductTitle chưa
             $productTitle = ProductTitle::firstOrCreate([
                 'name' => $request->name,
                 'author' => $request->author,
@@ -118,7 +118,7 @@ class ProductController extends Controller
                 'supplier_id' => $request->supplier_id,
             ]);
 
-            // Thêm mới Book
+            // Thêm mới Product
             $product = Product::create([
                 'quantity' => 0,
                 'unit_price' => $request->unit_price,
@@ -143,7 +143,7 @@ class ProductController extends Controller
                 }
             }
 
-            return redirect()->route('book.create')->with('success', 'Sản phẩm đã được thêm thành công.');
+            return redirect()->route('product.create')->with('success', 'Sản phẩm đã được thêm thành công.');
         } catch (\Exception $e) {
             Log::error('Lỗi: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Lỗi xảy ra, vui lòng thử lại.']);
@@ -159,7 +159,7 @@ class ProductController extends Controller
         $this->authorize('view', $product);
 
         $product->load('productTitle', 'productTitle.productType', 'productTitle.suppliers', 'images');
-        return view('admin.book.show', compact('product'));
+        return view('admin.product.show', compact('product'));
     }
 
     /**
@@ -170,7 +170,7 @@ class ProductController extends Controller
         $this->authorize('update', $product);
         $productTypes = ProductType::orderBy('id', 'asc')->select('id', 'name')->get();
         $suppliers = Supplier::orderBy('id', 'asc')->select('id', 'name')->get();
-        return view('admin.book.edit', compact('productTypes', 'suppliers', 'product'));
+        return view('admin.product.edit', compact('productTypes', 'suppliers', 'product'));
     }
 
     /**
@@ -239,7 +239,7 @@ class ProductController extends Controller
                 }
             }
 
-            return redirect()->route('book.edit', ['book' => $product->id])->with('success', 'Sản phẩm đã được sửa thành công.');
+            return redirect()->route('product.edit', ['product' => $product->id])->with('success', 'Sản phẩm đã được sửa thành công.');
         } catch (\Exception $e) {
             Log::error('Lỗi: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Lỗi xảy ra, vui lòng thử lại.']);
@@ -265,7 +265,7 @@ class ProductController extends Controller
             'changed_at' => now(),
         ]);
 
-        return redirect()->route('book.index')->with('success', 'Xóa sách và các ảnh liên quan thành công.');
+        return redirect()->route('product.index')->with('success', 'Xóa sản phẩm và các ảnh liên quan thành công.');
     }
 
     public function restore($id)
@@ -284,6 +284,6 @@ class ProductController extends Controller
             'changed_at' => now(),
         ]);
 
-        return redirect()->route('books.index')->with('success', 'Book restored successfully.');
+        return redirect()->route('products.index')->with('success', 'Product restored successfully.');
     }
 }

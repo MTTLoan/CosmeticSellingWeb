@@ -24,8 +24,8 @@ class Supplier extends Model
 
     protected $guarded = ['id'];
 
-    public function bookTitles()
+    public function productTitles()
     {
-        return $this->hasMany(BookTitle::class, 'supplier_id');
+        return $this->hasMany(ProductTitle::class, 'supplier_id');
     }
 }

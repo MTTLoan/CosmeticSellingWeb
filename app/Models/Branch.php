@@ -27,9 +27,9 @@ class Branch extends Model
         return $this->belongsTo(Employee::class, 'manager_id');
     }
 
-    public function books()
+    public function products()
     {
-        return $this->belongsToMany(Book::class, 'books_branches', 'branch_id', 'book_id')
+        return $this->belongsToMany(Product::class, 'products_branches', 'branch_id', 'product_id')
                     ->withPivot('quantity');
     }
 
